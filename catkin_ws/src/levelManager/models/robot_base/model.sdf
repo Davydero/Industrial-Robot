@@ -17,7 +17,8 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://robot_base/meshes/robot_base.dae</uri>
+            <uri>model://robot_base/meshes/base2.dae</uri>
+            <scale>1.5 1.5 1</scale>
           </mesh>
         </geometry>
       </visual>

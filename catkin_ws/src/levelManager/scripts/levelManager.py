@@ -77,11 +77,14 @@ spawn_name = '_spawn'
 level = None
 selectBrick = None
 maxLego = 11
-spawn_pos = (-0.35, -0.42, 0.74)  		#center of spawn area
-spawn_dim = (0.32, 0.23)    			#spawning area
-min_space = 0.010    					#min space between lego
-min_distance = 0.15   					#min distance between lego
-
+#spawn_pos = (-0.35, -0.42, 0.74)  		#center of spawn area
+spawn_pos = (-0.38, -0.43, 0.74)
+#spawn_dim = (0.32, 0.23)    			#spawning area
+spawn_dim = (0.25, 0.2)
+#min_space = 0.010    					#min space between lego
+#min_distance = 0.15   					#min distance between lego
+min_space = 0.010
+min_distance = 0.15 
 #function parsing arguments
 def readArgs():
 	global package_name
@@ -123,7 +126,8 @@ brickDict = { \
 		'X1-Y4-Z1': (7,(0.031,0.127,0.038)), \
 		'X1-Y4-Z2': (8,(0.031,0.127,0.057)), \
 		'X2-Y2-Z2': (9,(0.063,0.063,0.057)), \
-		'X2-Y2-Z2-FILLET': (10,(0.063,0.063,0.057)) \
+		'X2-Y2-Z2-FILLET': (10,(0.063,0.063,0.057)), \
+		'BARRASIM': (11,(0.031,0.127,0.038)) \
 		}
 
 brickOrientations = { \
@@ -132,7 +136,8 @@ brickOrientations = { \
 		'X1-Y2-Z2-TWINFILLET': (((1,1),(1,3)),2.145295,0.024437), \
 		'X1-Y3-Z2-FILLET': (((1,1),(1,2),(0,2)),2.645291,0.014227), \
 		'X1-Y4-Z1': (((1,1),(1,3)),3.14,0.019), \
-		'X2-Y2-Z2-FILLET': (((1,1),(1,2),(0,2)),2.496793,0.018718) \
+		'X2-Y2-Z2-FILLET': (((1,1),(1,2),(0,2)),2.496793,0.018718), \
+		'BARRASIM': (((1,1),(1,3)),3.14,0.019) \
 		} #brickOrientations = (((side, roll), ...), rotX, height)
 
 #color bricks
@@ -140,7 +145,7 @@ colorList = ['Gazebo/Indigo', 'Gazebo/Gray', 'Gazebo/Orange', \
 		'Gazebo/Red', 'Gazebo/Purple', 'Gazebo/SkyBlue', \
 		'Gazebo/DarkYellow', 'Gazebo/White', 'Gazebo/Green']
 
-brickList = list(brickDict.keys())
+brickList = list(brickDict.keys()) #.keys() despliega todos los elementos de la izq del diccionario
 counters = [0 for brick in brickList]
 
 lego = [] 	#lego = [[name, type, pose, radius], ...]
@@ -210,14 +215,14 @@ def getValidPose(brickType, rotated):
 	return pos, radius
 
 #functiont to spawn model
-def spawn_model(model, pos, name=None, ref_frame='world', color=None):
-	
+#def spawn_model(model, pos, name=None, ref_frame='world', color=None):
+def spawn_model(model, pos, name=None, ref_frame='world'):
 	if name is None:
 		name = model
 	
 	model_xml = open(getModelPath(model), 'r').read()
-	if color is not None:
-		model_xml = changeModelColor(model_xml, color)
+	#if color is not None:
+	#	model_xml = changeModelColor(model_xml, color)
 
 	spawn_model_client = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
 	return spawn_model_client(model_name=name, 
@@ -233,15 +238,18 @@ def delete_model(name):
 
 #support functon spawn bricks
 def spawnaLego(brickType=None, rotated=False):
-	if brickType is None:
-		brickType = random.choice(brickList)
-	
+	#if brickType is None:
+		#brickType = random.choice(brickList) #bricklist es todos los nombres de los bricks ESTA LINEA SE DEBE DESCOMENTAR
+	brickType = 'BARRASIM'
+		#brickType = 'X1-Y4-Z1'
+
 	brickIndex = brickDict[brickType][0]
 	name = f'{brickType}_{counters[brickIndex]+1}'
 	pos, radius = getValidPose(brickType, rotated)
-	color = random.choice(colorList)
+	#color = random.choice(colorList)
 
-	spawn_model(brickType, pos, name, spawn_name, color)
+	#spawn_model(brickType, pos, name, spawn_name, color)
+	spawn_model(brickType, pos, name, spawn_name)
 	lego.append((name, brickType, pos, radius))
 	counters[brickIndex] += 1
 
@@ -263,8 +271,14 @@ def setUpArea(livello=None, selectBrick=None):
 			#spawnaLego('X2-Y2-Z2',rotated=True)
 		elif(livello == 2):
 			#spawn all bricks
-			for brickType in brickList:
-				spawnaLego(brickType)
+			#for brickType in brickList:
+				#spawnaLego(brickType)
+			spawnaLego(brickType)
+			spawnaLego(brickType)
+			spawnaLego(brickType)
+			spawnaLego(brickType)
+			spawnaLego(brickType)
+			spawnaLego(brickType)
 		elif(livello == 3):
 			#spawn first 4 blocks	
 			for brickType in brickList[0:4]:

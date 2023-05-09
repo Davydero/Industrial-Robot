@@ -28,8 +28,8 @@ origin = None
 model = None
 model_orientation = None
 
-legoClasses = ['X1-Y1-Z2', 'X1-Y2-Z1', 'X1-Y2-Z2', 'X1-Y2-Z2-CHAMFER', 'X1-Y2-Z2-TWINFILLET', 'X1-Y3-Z2', 'X1-Y3-Z2-FILLET', 'X1-Y4-Z1', 'X1-Y4-Z2', 'X2-Y2-Z2', 'X2-Y2-Z2-FILLET']
-
+#legoClasses = ['X1-Y1-Z2', 'X1-Y2-Z1', 'X1-Y2-Z2', 'X1-Y2-Z2-CHAMFER', 'X1-Y2-Z2-TWINFILLET', 'X1-Y3-Z2', 'X1-Y3-Z2-FILLET', 'X1-Y4-Z1', 'X1-Y4-Z2', 'X2-Y2-Z2', 'X2-Y2-Z2-FILLET']
+legoClasses = ['X1-Y1-Z2', 'X1-Y2-Z1', 'X1-Y2-Z2', 'X1-Y2-Z2-CHAMFER', 'X1-Y2-Z2-TWINFILLET', 'X1-Y3-Z2', 'X1-Y3-Z2-FILLET', 'BARRASIM', 'X1-Y4-Z2', 'X2-Y2-Z2', 'X2-Y2-Z2-FILLET']
 argv = sys.argv
 a_show = '-show' in argv
 
@@ -42,7 +42,7 @@ def get_dist_tavolo(depth, hsv, img_draw):
     #mask = get_lego_mask(color, hsv, (5, 5, 5))
     #dist_tavolo = depth[mask].max()
     #if dist_tavolo > 1: dist_tavolo -= height_tavolo
-    dist_tavolo = np.nanmax(depth)
+    dist_tavolo = np.nanmax(depth)#devuelve el mayor valor de un array
 
 def get_origin(img):
     global origin
@@ -245,10 +245,10 @@ def process_item(imgs, item):
         cv.drawContours(img_draw, np.int0([top_box]), 0, (5,5,5), 2)
         cv.circle(img_draw, np.int0(top_box[iver]),1, (0,0,255),1,cv.LINE_AA)    
 
-
+    print('or_nm : ', or_nm)
 
     #rotation and axis drawing
-    if or_nm in ('sopra', 'sotto', 'sopra/sotto', '?'): # fin x, y directions (dirX, dirY)
+    if or_nm in ('sopra', 'sotto', 'sopra/sotto', '?', 'lato'): # fin x, y directions (dirX, dirY)
         dirZ = np.array((0,0,1))
         if or_nm == 'sotto': dirZ = np.array((0,0,-1))
         
@@ -264,13 +264,15 @@ def process_item(imgs, item):
         dirY = np.array((*dirY, 0))
         dirX = np.cross(dirZ, dirY)
 
-    elif or_nm == "lato": # find pin direction (dirZ)
+    """elif or_nm == "lato": # find pin direction (dirZ)
         edgePin = [ver for ver in top_box if np.dot(ver - l_center, l_center - top_center) >= 0][:2]
-        
+        print('edgePin ', edgePin)
         dirZ = (edgePin[0] + edgePin[1]) / 2 - l_center
         dirZ /= np.linalg.norm(dirZ)
         dirZ = np.array((*dirZ, 0))
         
+        #print('cl: ', cl) #cl 7
+        #print('ax: ', ax) #ax 1
         if cl == 10:
             if top_size[1] > top_size[0]: top_size = top_size[::-1]
             if top_size[0] / top_size[1] < 1.7: ax = 0
@@ -291,6 +293,9 @@ def process_item(imgs, item):
             dirX = np.cross(dirZ, dirY)
 
         if a_show: cv.line(img_draw, *np.int0(edgePin), (255,255,0), 2)
+        print('dirX : ', dirX)
+        print('dirY : ', dirY)
+        print('dirZ : ', dirZ)"""
 
     l_center = point_inverse_distortption(l_center, l_height)
 
@@ -348,7 +353,7 @@ def process_item(imgs, item):
         dotclamp = max(-1, min(1, np.dot(vec, np.array(ax))))
         return wise * np.arccos(dotclamp)
 
-    msg = ModelStates()
+    msg = ModelStates() #consta de nombre, pose y twist en el mundo de gazebo
     msg.name = nm
     #fov = 1.047198
     #rap = np.tan(fov)
@@ -391,7 +396,7 @@ def process_image(rgb, depth):
     #results collecting localization
 
     #print("Model localization: Start...",end='\r')
-    model.conf = 0.6
+    model.conf = 0.6 #model es el modelo yolo
     results = model(rgb)
     pandino = results.pandas().xyxy[0].to_dict(orient="records")
     #print("Model localization: Finish  ")
@@ -420,7 +425,7 @@ def process_image(rgb, depth):
 def process_CB(image_rgb, image_depth):
     t_start = time.time()
     #from standard message image to opencv image
-    rgb = CvBridge().imgmsg_to_cv2(image_rgb, "bgr8")                                                
+    rgb = CvBridge().imgmsg_to_cv2(image_rgb, "bgr8")   #rosbridge converts ROS image messages into openCV images                                             
     depth = CvBridge().imgmsg_to_cv2(image_depth, "32FC1")
     
     process_image(rgb, depth)

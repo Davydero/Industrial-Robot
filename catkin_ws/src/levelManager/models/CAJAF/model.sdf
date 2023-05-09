@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="CAJAF">
+    <static>true</static>
+    <link name="box">
+      <pose>0 0 0 0 -0.785398 1.5708</pose>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://CAJAF/meshes/CAJAF.stl</uri>
+            <scale>0.8 0.4 0.6</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://CAJAF/meshes/CAJAF.stl</uri>
+            <scale>0.8 0.5 0.6</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Red</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

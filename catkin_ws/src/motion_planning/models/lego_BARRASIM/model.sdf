@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="BARRASIM">
+    <static>false</static>
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0e-02 -0.013e-02 0.028e-02</pose>
+        <mass>50.29e-6</mass>
+        <inertia>
+          <ixx>304.1e-10</ixx>
+          <ixy>0.0001e-10</ixy>
+          <ixz>0.0004e-10</ixz>
+          <iyy>45.92e-10</iyy>
+          <iyz>-0.267e-10</iyz>
+          <izz>303.17e-10</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.031 0.12 0.038</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.031 0.12 0.038</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://BARRASIM/materials/scripts</uri>
+            <uri>model://BARRASIM/materials/textures</uri>
+            <name>BARRASIM</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

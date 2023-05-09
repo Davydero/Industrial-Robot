@@ -177,7 +177,7 @@ namespace gazebo
 
     ROS_DEBUG_STREAM("Setting is_static for link " << link << " of model " << model << " to " << std::boolalpha << set_static);
     m->SetCollideMode("none");
-    m->SetGravityMode(false);
+    m->SetGravityMode(true); // se modifico, originalmente era false
     m->ResetPhysicsStates();
 
     return true;
@@ -223,9 +223,9 @@ namespace gazebo
     }
     else{
       ROS_INFO_STREAM("Model property is_static changed to " << std::boolalpha << req.set_static);
-      res.ok = true;
+      res.ok = true; //era true originalmente
     }
-    return true;
+    return true; //era true originalmente
 
   }
 

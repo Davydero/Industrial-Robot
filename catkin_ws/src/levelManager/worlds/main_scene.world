@@ -63,5 +63,13 @@
       </include>
     </model>
 
+    <!--Caja-->
+    <model name="CAJAF">
+      <static>true</static>
+      <include>
+        <uri>model://CAJAF</uri>
+         <pose>0.289908 -0.501033 0.84 0 0 0</pose>
+      </include>
+    </model>
   </world>
 </sdf>

@@ -1,0 +1,13 @@
+material BARRASIM
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture circulos.png
+      }
+    }
+  }
+}
