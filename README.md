@@ -9,8 +9,9 @@
   </p>
 </p>
 <br>
-
-<img src="[https://github.com/pietrolechthaler/UR5-Pick-and-Place-Simulation/blob/main/main.png](https://user-images.githubusercontent.com/11477020/237109895-8457fd5c-6ac8-4001-8374-a6df909813fd.PNG)">
+<p align="center">
+<img src="https://user-images.githubusercontent.com/11477020/237109895-8457fd5c-6ac8-4001-8374-a6df909813fd.PNG">
+</p>
 
 ## Table of contents
 - [Description](#description)
@@ -21,13 +22,12 @@
 - [Contributor](#contributor)
 
 ### Description
-This repository demonstrates UR5 pick-and-place in ROS and Gazebo. The UR5 uses a Xbox Kinect cam to detect eleven types of Lego Bricks, and publish its position and angolation. 
+This repository demonstrates UR5 pick-and-place in ROS and Gazebo. The UR5 uses a Xbox Kinect cam to detect snacks, and publish its position and angolation. 
+The robot must move the snacks to a position in the red box accumulating in order the snacks. In the following video you can see the performance:
 
-The goals of this project are:
-- simulate the iteration of a UR5 robot with Lego bricks
-- The robotic arm must be able to move a block from position A to B and construct a castle by assembling different bricks
-
-<img src="https://github.com/pietrolechthaler/UR5-Pick-and-Place-Simulation/blob/main/intro.gif">
+<p> 
+  <a href="https://youtu.be/suaaoTzcXyQ"> YouTube Video </a>
+</p>
 
 ### Requirements
 
